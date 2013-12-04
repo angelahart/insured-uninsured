@@ -1,0 +1,13 @@
+setwd("~angelhartwi/dataviz-fall-2013")
+
+
+
+
+
+
+
+
+
+
+?subset to find smaller data sets within larger data set 
+subset(data, first.year.bachelor)
