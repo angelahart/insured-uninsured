@@ -1,0 +1,140 @@
+rm(list=ls())
+gc()
+
+			
+install.library("RcolorBrewer")
+library("maptools")
+# library("maps")
+library("RColorBrewer")
+
+setwd("~/dataviz-fall-2013/insured-uninsured")
+unins <- read.csv("data/remaining uninsured_enhanced.csv")
+
+#label uninsured per region as a character
+unins$region <- as.character(unins$region)
+
+#group uninsured per region by geographic area on the California map
+unins$region[grep("Bay Area",unins$region)] <- "Bay Area"
+
+unins <- reshape(unins,timevar="year",idvar="region",direction="wide")
+rownames(unins) <- unins$region
+
+#load California shape file
+shapes <- readShapePoly("ca/counties.shp")
+
+#read the county shape files and note that there's no header
+counties <- read.csv("data/counties.csv",header=FALSE)
+
+counties<-do.call(rbind,apply(counties,1,function(x){
+	if(x[1]!=""){
+		county <- unlist(strsplit(as.character(x[2]),", ",fixed=TRUE))
+		if(length(grep("County",county))==0) county <- paste(county,"County")
+		
+		county <- gsub("  "," ", county,fixed=TRUE)
+		
+		cbind("MacroArea"=as.character(x[1]),"County"=county)
+		
+		}
+	}))
+	
+uninsLong <- cbind(unins[counties[,"MacroArea"],],County=counties[,"County"])
+
+
+plotMap <- function(X,colors="Blues",breaks=NULL,border="black",main=""){
+	
+	if(is.null(breaks)) breaks <- c(-Inf,unique(X) + c(0,diff(unique(X))/2))
+	
+	colors <- brewer.pal(n=length(breaks),name=colors)
+	
+	matchOrder <- match(as.character(shapes@data$COUNTY), as.character(uninsLong$County))
+	
+	X <- X[matchOrder]
+	
+	
+	buckets <- cut(X,breaks=breaks)
+	numeric_buckets <- as.numeric(buckets)
+	
+	#plot
+	plot(shapes, col=colors[numeric_buckets],border=border)
+	title(main=main)
+	
+	}
+
+	#This is where we plot each different category
+
+plotMap(uninsLong[,"percent.immigration.status.2014"],border="orange",main="blah")
+
+
+
+plotMap(uninsLong[,"exchange.with.subsidies.2014"]-uninsLong[,"exchange.with.subsidies.2019"])
+plotMap(uninsLong[,"exchange.with.subsidies.2014"]-uninsLong[,"exchange.with.subsidies.2019"])
+
+par(mfrow=c(1,2))
+plotMap(uninsLong[,"percent.immigration.status.2014"],border="orange",main="% Immigration Status 2014")
+plotMap(uninsLong[,"percent.immigration.status.2019"],border="orange",main="% Immigration Status 2019")
+
+plotMap(uninsLong[,"percent.Medi.Cal.2014"],border="orange",main="% Medi-Cal 2014")
+plotMap(uninsLong[,"percent.Medi.Cal.2019"],border="orange",main="% Medi-Cal 2019")
+
+par(mfrow=c(2,2))
+plotMap(uninsLong[,"percent.exchange.with.subsidies.2014"],border="orange",main="% Exchange with Subsidies 2014")
+plotMap(uninsLong[,"percent.exchange.with.subsidies.2019"],border="orange",main="% Exchange with Subsidies 2019")
+
+plotMap(uninsLong[,"percent.exchange.without.subsidies.2014"],border="orange",main="% Exchange without Subsidies 2014")
+plotMap(uninsLong[,"percent.exchange.without.subsidies.2019"],border="orange",main="% Exchange without Subsidies 2019")
+
+par(mfrow=c(1,1))
+
+
+# abbreviate region name
+unins$region[unins$region=="Northern California and Sierra Counties"] <- "NorCal & Sierra"                  
+
+##################################################################################################################
+# NEW SLOPEGRAPH R CODE
+#This is how to plot the same data with a slopegraph
+
+install.library("maptools")
+install.library("RcolorBrewer")
+library("maptools")
+# library("maps")
+library("RColorBrewer")
+
+setwd("~/dataviz-fall-2013/insured-uninsured")
+unins <- read.csv("data/remaining uninsured_enhanced.csv")
+unins$region <- as.character(unins$region)
+unins$region[grep("Bay Area",unins$region)] <- "Bay Area"
+unins <- reshape(unins,timevar="year",idvar="region",direction="wide")
+rownames(unins) <- unins$region
+
+
+shapes <- readShapePoly("ca/counties.shp")
+
+
+counties <- read.csv("data/counties.csv",header=FALSE)
+# ?brewer.pal
+# display.brewer.pal(7,"Accent")
+# display.brewer.pal(5,"Blues")
+slopeGraph <- function(unins,variable,color="Spectral",alpha=1,where="topright",ylim=NULL){
+	
+	columns <- paste(variable,c(2014,2019),sep=".")
+	
+	if(is.null(ylim)) ylim<-range(unins[,columns])
+	
+	col<-brewer.pal(n=nrow(unins),name=color)
+	col <- adjustcolor(col,alpha=alpha)
+	plot(0,0,xlim=c(1,2),ylim=ylim,axes=FALSE,xlab="year",ylab=gsub("."," ",variable,fixed=TRUE),type="n")
+	axis(1,at=c(1,2),labels=c("2014","2019"))
+	axis(2,at= seq(min(unins[,columns]),max(unins[,columns]),length.out=nrow(unins)))
+	lapply(1:nrow(unins),function(i){
+		lines(1:2,unins[i,columns],col=col[i],lwd=5)
+		})
+	#legend(where,col=col,legend=unins[,"region"],box.lty=0,pch=16)
+	#box() # this is optional
+	
+	}
+	
+slopeGraph(unins,variable="immigration.status",alpha=0.5,where=c(1,280000))
+slopeGraph(unins,variable="percent.immigration.status",alpha=1,where="topleft",ylim=c(12,34))
+
+slopeGraph(unins,variable="percent.Medi.Cal",alpha=1,where=c(15,35.5))
+slopeGraph(unins,variable="Medi.Cal",alpha=1,where=c(15,350000.5))
