@@ -1,34 +1,22 @@
 rm(list=ls())
 gc()
 
-			
-install.library("RcolorBrewer")
 library("maptools")
 # library("maps")
 library("RColorBrewer")
 
-setwd("~/dataviz-fall-2013/insured-uninsured")
-unins <- read.csv("data/remaining uninsured_enhanced.csv")
 
-#label uninsured per region as a character
+unins <- read.csv("remaining uninsured_enhanced.csv")
 unins$region <- as.character(unins$region)
-
-#group uninsured per region by geographic area on the California map
 unins$region[grep("Bay Area",unins$region)] <- "Bay Area"
-
 unins <- reshape(unins,timevar="year",idvar="region",direction="wide")
 rownames(unins) <- unins$region
 
-#load California shape file
+
 shapes <- readShapePoly("ca/counties.shp")
 
-#see if plotting CA map actually fucking worked
-plot(shapes)
 
-#read the county shape files and note that there's no header
-counties <- read.csv("data/counties.csv",header=FALSE)
-
-#create a function where I can input any data about any region to get the corresponding info
+counties <- read.csv("counties.csv",header=FALSE)
 
 counties<-do.call(rbind,apply(counties,1,function(x){
 	if(x[1]!=""){
@@ -65,8 +53,6 @@ plotMap <- function(X,colors="Blues",breaks=NULL,border="black",main=""){
 	
 	}
 
-	#This is where we plot each different category
-
 plotMap(uninsLong[,"percent.immigration.status.2014"],border="orange",main="blah")
 
 
@@ -94,15 +80,8 @@ par(mfrow=c(1,1))
 # abbreviate region name
 unins$region[unins$region=="Northern California and Sierra Counties"] <- "NorCal & Sierra"                  
 
-##################################################################################################################
-# NEW SLOPEGRAPH R CODE
-#This is how to plot the same data with a slopegraph
 
-install.library("maptools")
-install.library("RcolorBrewer")
-library("maptools")
-# library("maps")
-library("RColorBrewer")
+####This is where the slopegraph code begins###
 
 setwd("~/dataviz-fall-2013/insured-uninsured")
 unins <- read.csv("data/remaining uninsured_enhanced.csv")
@@ -115,11 +94,15 @@ rownames(unins) <- unins$region
 shapes <- readShapePoly("ca/counties.shp")
 
 
-counties <- read.csv("data/counties.csv",header=FALSE)
+counties <- read.csv("counties.csv",header=FALSE)
+
 # ?brewer.pal
 # display.brewer.pal(7,"Accent")
 # display.brewer.pal(5,"Blues")
-slopeGraph <- function(unins,variable,color="Spectral",alpha=1,where="topright",ylim=NULL){
+
+my_y_limit <- c(0,100)
+
+slopeGraph <- function(unins,variable,color="Spectral",alpha=1,where="topright"){
 	
 	columns <- paste(variable,c(2014,2019),sep=".")
 	
@@ -127,18 +110,18 @@ slopeGraph <- function(unins,variable,color="Spectral",alpha=1,where="topright",
 	
 	col<-brewer.pal(n=nrow(unins),name=color)
 	col <- adjustcolor(col,alpha=alpha)
-	plot(0,0,xlim=c(1,2),ylim=ylim,axes=FALSE,xlab="year",ylab=gsub("."," ",variable,fixed=TRUE),type="n")
+	plot(0,0,xlim=c(1,2),ylim=my_y_limit,axes=FALSE,xlab="year",type="n", main=variable)
 	axis(1,at=c(1,2),labels=c("2014","2019"))
 	axis(2,at= seq(min(unins[,columns]),max(unins[,columns]),length.out=nrow(unins)))
 	lapply(1:nrow(unins),function(i){
 		lines(1:2,unins[i,columns],col=col[i],lwd=5)
 		})
-	#legend(where,col=col,legend=unins[,"region"],box.lty=0,pch=16)
-	#box() # this is optional
+	##legend(where,col=col,legend=unins[,"region"],box.lty=0,pch=16)
+	##box() # this is optional
 	
 	}
 	
-slopeGraph(unins,variable="immigration.status",alpha=0.5,where=c(1,280000))
+slopeGraph(unins,variable="immigration.status",alpha=1,where=c(1,280000))
 slopeGraph(unins,variable="percent.immigration.status",alpha=1,where="topleft",ylim=c(12,34))
 
 slopeGraph(unins,variable="percent.Medi.Cal",alpha=1,where=c(15,35.5))
