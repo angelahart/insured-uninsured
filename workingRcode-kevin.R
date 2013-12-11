@@ -44,7 +44,7 @@ my_y_limit <- c(10,42)
 
 col_names <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")
 col_names_nice <- c("Immigration status", "Medi-Cal", "Exchange with subsidies", "Exchange without subsidies")
-
+	
 plot_slope_graph <- function(col_name) {
 
 
@@ -64,7 +64,7 @@ plot_slope_graph <- function(col_name) {
 
 
 	#start a new plot
-	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,type="n", main=nice)
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="",ylab = "",type="n", main=nice)
 
 	#vector of 7 colors
 	cols <- rainbow(7)

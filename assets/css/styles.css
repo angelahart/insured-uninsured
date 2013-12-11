@@ -11,3 +11,7 @@ ul li {
 li:last-of-type {
 	margin: 0;
 }
+.legend{
+	width: 400px;
+margin: 10px;
+}
