@@ -1,0 +1,509 @@
+library("RColorBrewer")
+setwd("~/dataviz-fall-2013/insured-uninsured")
+unins <- read.csv("remaining uninsured_enhanced.csv")
+unins <- read.csv("data/remaining uninsured_enhanced.csv")
+head(unins)
+names(unins)
+dim(unins)
+unins$region <- as.character(unins$region)
+unins <- read.csv("data/remaining uninsured_enhanced.csv", sringsAsFactors=F)
+unins <- read.csv("data/remaining uninsured_enhanced.csv", stringsAsFactors=F)
+unins$region <- as.character(unins$region)
+grep("Bay Area",unins$region)
+unins$Region
+unins$region
+unins$region[grep("Bay Area",unins$region)] <- "Bay Area"
+unins$region
+install.packages("stringr")
+library(stringr)
+str_trim(unins$region)
+unins <- read.csv("data/remaining uninsured_enhanced.csv", stringsAsFactors=F)
+unins$region <- as.character(unins$region)
+unins$region
+str_trim(unins$region)
+this removes empty white space#
+unins$region <- str_trim(unins$region)
+unins <- reshape(unins,timevar="year",idvar="region",direction="wide")
+unins
+unins
+rownames(unins) <- unins$region
+unins$region[unins$region=="Northern California and Sierra Counties"] <- "NorCal & Sierra"
+c(0,100)
+columns <- paste(variable,c(2014,2019),sep=".")
+unins
+names(unins)
+head(unins)
+field <- "percent.exchange.with.subsidies"
+paste(field_name,c(2014,2019),sep=".")
+field_name <- "percent.exchange.with.subsidies"
+paste(field_name,c(2014,2019),sep=".")
+c("region", paste(variable,c(2014,2019),sep=".") )
+c("region", paste(field_name,c(2014,2019),sep=".") )
+columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )
+unins[,columns_I_want]
+df <- unins[,columns_I_want]
+head(df)
+head(df)
+names(df)
+plot(0,0,xlim=c(1,2),ylim=my_y_limit,axes=FALSE,xlab="year",type="n", main=field_name)
+my_y_limit <- c(0,100)
+plot(0,0,xlim=c(1,2),ylim=my_y_limit,axes=FALSE,xlab="year",type="n", main=field_name)
+df[i,columns_I_want[2]]
+i <- 1
+df[i,columns_I_want[2]]
+?segments
+df
+i <- 1
+df[1,]
+df[1,2]
+df[1,3]
+plot(0,0,xlim=c(1,2),ylim=my_y_limit,axes=FALSE,xlab="year",type="n", main=field_name)
+v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]#
+#
+	segments(2014, v_2014, 2019, v_2019)
+v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]
+v_2014
+v_2019
+start a new plot#
+plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,axes=FALSE,xlab="year",type="n", main=field_name)
+v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]
+plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)
+for (i in 1:nrow(df)) {#
+#
+	v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]#
+#
+	segments(2014, v_2014, 2019, v_2019)#
+#
+}
+my_y_limit <- c(15,30)#
+#
+#start a new plot#
+plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+for (i in 1:nrow(df)) {#
+#
+	v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]#
+#
+	segments(2014, v_2014, 2019, v_2019)#
+#
+}
+lines(c(2014,2019), c(v_2014, v_2019))
+lines(c(2014,2019), c(v_2014, v_2019), col="red")
+start a new plot#
+plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+for (i in 1:nrow(df)) {#
+#
+	v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]#
+#
+	# segments(2014, v_2014, 2019, v_2019)#
+	lines(c(2014,2019), c(v_2014, v_2019))#
+#
+}
+df
+for (i in 1:nrow(df)) {#
+#
+	v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]#
+#
+	# segments(2014, v_2014, 2019, v_2019)#
+	lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+#
+}
+cols <- rainbow(7)#
+#
+for (i in 1:nrow(df)) {#
+#
+	v_2014 <- df[i,2]#
+	v_2019 <- df[i,3]#
+#
+	# segments(2014, v_2014, 2019, v_2019)#
+	lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+#
+}
+head(df)
+names(df)
+df$region
+class(df)
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+#
+	my_y_limit <- c(15,30)#
+#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+plot_slope_graph("percent.exchange.with.subsidies")
+names(unins)
+par(mfrow=c(1,4))
+barplot(1:10)
+barplot(1:10)
+barplot(1:10)
+barplot(1:10)
+barplot(1:10)
+all_fields <- c("percent.exchange.with.subsidies", "percent.exchange.with.subsidies", "percent.exchange.with.subsidies", "percent.exchange.with.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+head(data)
+data
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(15,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+?lines
+my_y_limit <- c(20,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(10,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(10,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=" ") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(10,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(10,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,ylab = "percent",xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(10,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,ylab = "percent uninsured",xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}#
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(10,50)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,ylab = "percent uninsured",xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}#
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+my_y_limit <- c(10,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,ylab = "percent uninsured",xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}
+png('~/dataviz-fall-2013/')
+dev.off()
+png('~/dataviz-fall-2013/')
+dev.off()
+png('image.png')
+dev.off()
+my_y_limit <- c(10,40)#
+#
+plot_slope_graph <- function(col_name) {#
+#
+	#the field I want#
+	field_name <- col_name#
+#
+	#the column names I want.#
+	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )#
+#
+	# data at these columns#
+	df <- unins[,columns_I_want]#
+	#start a new plot#
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,ylab = "percent uninsured",xlab="year",type="n", main=field_name)#
+#
+	#vector of 7 colors#
+	cols <- rainbow(7)#
+	for (i in 1:nrow(df)) {#
+		v_2014 <- df[i,2]#
+		v_2019 <- df[i,3]#
+		# segments(2014, v_2014, 2019, v_2019)#
+		lines(c(2014,2019), c(v_2014, v_2019), col=cols[i])#
+	}#
+#
+}
+all_fields <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")#
+par(mfrow=c(1,4))#
+#
+for (i in all_fields) {#
+	plot_slope_graph(i)#
+}

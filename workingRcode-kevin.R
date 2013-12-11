@@ -40,12 +40,21 @@ unins$region[unins$region=="Northern California and Sierra Counties"] <- "NorCal
 # }
 
 
-my_y_limit <- c(10,40)
+my_y_limit <- c(10,42)
+
+col_names <- c("percent.immigration.status", "percent.Medi.Cal", "percent.exchange.with.subsidies", "percent.exchange.without.subsidies")
+col_names_nice <- c("Immigration status", "Medi-Cal", "Exchange with subsidies", "Exchange without subsidies")
 
 plot_slope_graph <- function(col_name) {
 
+
+	print(col_name)
+
 	#the field I want
 	field_name <- col_name
+
+	idx <- which(col_names == col_name)
+	nice <- col_names_nice[idx]
 
 	#the column names I want.
 	columns_I_want <- c("region", paste(field_name,c(2014,2019),sep=".") )
@@ -55,7 +64,7 @@ plot_slope_graph <- function(col_name) {
 
 
 	#start a new plot
-	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,ylab = "percent uninsured",xlab="year",type="n", main=field_name)
+	plot(0,0,xlim=c(2014,2019),ylim=my_y_limit,type="n", main=nice)
 
 	#vector of 7 colors
 	cols <- rainbow(7)
