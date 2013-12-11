@@ -15,3 +15,5 @@ li:last-of-type {
 	width: 400px;
 margin: 10px;
 }
+
+p.sansserif{font-family:Arial,Helvetica,sans-serif;}
