@@ -6,6 +6,7 @@ ul li {
 	display: inline-block;
 	width: 180px;
 	margin: 0 100px 0 0;
+	vertical-align: top;
 }
 
 li:last-of-type {
